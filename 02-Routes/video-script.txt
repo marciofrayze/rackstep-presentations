@@ -1,0 +1,188 @@
+RackStep Video tutorial #02- Routing (video script)
+------------------------------------
+
+Hello everyone! My name is Marcio and this is the second RackStep video tutorial.
+
+Today I will show you the RackStep Routing System.
+
+So, let's get started.
+
+--
+
+As I said in my previous video, 
+
+one of the main goals of RackStep is to be as simple as possible
+
+and the current RackStep Routing System takes this to the extreme.
+
+But first... what is a Route?
+
+If you have ever used Ruby on Rails or Sinatra 
+
+you probably saw this concept before
+
+and in RackStep it's very similar.
+
+The Router is the part of the framework responsible for...
+
+given a http request, decide which controller should answer it.
+
+To do that in RackStep we use the add_route method 
+
+to bind a kind of request with a controller.
+
+This way, we are able to connect a URL with 
+
+the code that will process that request.
+
+In RackStep a Route is defined by the combination of a http verb
+
+like GET, POST, PUT or DELETE
+
+and a path, like "/users" or "/messages".
+
+So this are a few examples of valid Routes in RackStep:
+
+GET /users
+
+POST /messages/comment
+
+DELETE /orders
+
+
+As you may know, I am the main author of RackStep.
+
+And while I was developing this feature I tried a few different approaches.
+
+My main struggle was to decide if RackStep should or should NOT
+
+allow dinamic routing and...
+
+I decided to NOT include dinamic routing.
+
+At least for now. 
+
+I know a lot of people will criticize me for this decision
+
+but as I said before, I want the code base of the framework to be 
+
+as small and simple as possible.
+
+--
+
+If you are used to work with REST APIs,
+
+you probably use Routes like this:
+
+GET /users/10
+
+Where 10 is a path parameter that represents the ID of a user.
+
+Well.. RackStep does not work this way. 
+
+Your path cannot contain variables
+
+but doing something similar to this is not hard!
+
+You could for example do something like this:
+
+GET /users?id=10
+
+Now we have a fixed path ("/users") and a query string with the id.
+
+Since RackStep injects a request attribute in every controller,
+
+you can easily get the value of the ID variable inside your controller.
+
+Let's see an example.
+
+class App < RackStep::App
+
+end
+
+class UsersController < RackStep::Controller
+  def process_request
+
+
+  end
+end
+
+As you probably know by now, 
+
+this is the base of every RackStep application, right?
+
+First we created an App with the routes
+
+and then our controllers. 
+
+In this example we defined only one, the UsersController.
+
+So in our process_request method lets get the value of the ID.
+
+class ExampleController < RackStep::Controller
+  def process_request
+    id = request.params['id']
+
+   
+  end
+end
+
+RackStep by default assumes that your service response will return a json content.
+
+In this example, let's change that to "text/html".
+
+class ExampleController < RackStep::Controller
+  def process_request
+    id = request.params['id']
+    response.content_type = 'text/html'
+    
+  end
+end
+
+And return back to the user message with the ID.
+
+class ExampleController < RackStep::Controller
+  def process_request
+    id = request.params['id']
+    response.content_type = 'text/html'
+    response.body = "Your ID is #{id}"
+  end
+end
+
+If we start this application and go to our web browser 
+
+in the /users address and enter a query string named ID 
+
+with the value 10, we will get back a massage saying "Your ID is 10".
+
+When using the POST http method, the same principles applies.
+
+Well, now you know how to retrieve and use query parameters with RackStep.
+
+--
+
+What happens when the user enters an invalid URL path?
+
+As you might have guessed, the server returns a 404 - not found message.
+
+But... what exactly is going on here?
+
+Well, when no route is found, the RackStep Router will overwrite
+
+whatever path was entered by the user and change that to "notfound".
+
+You can imagine that as if RackStep was redirecting the user to "/notfound".
+
+By default, RackStep creates a simple Controller called RackStep::NotFoundController
+
+and creates a route that binds the "notfound" path to this class.
+
+This way, every request with an invalid path will be delegated to RackStep::NotFoundController.
+
+If you want, you can delegate this to another controller. 
+
+All you have to do is call the add_route method with the 
+
+"notfound" path to redirect the request to your custom controller.
+
+This will overwrite the default route created by RackStep.
