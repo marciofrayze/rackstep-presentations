@@ -15,6 +15,8 @@ one of the main goals of RackStep is to be as simple as possible
 
 and the current RackStep Routing System takes this to the extreme.
 
+--
+
 But first... what is a Route?
 
 If you have ever used Ruby on Rails or Sinatra 
@@ -41,7 +43,7 @@ like GET, POST, PUT or DELETE
 
 and a path, like "/users" or "/messages".
 
-So this are a few examples of valid Routes in RackStep:
+So
 
 GET /users
 
@@ -49,18 +51,19 @@ POST /messages/comment
 
 DELETE /orders
 
+this are a few examples of valid Routes in RackStep.
 
-As you may know, I am the main author of RackStep.
+--
 
-And while I was developing this feature I tried a few different approaches.
+As you may know, I am the main author of RackStep
+
+and while I was developing this feature I tried a few different approaches.
 
 My main struggle was to decide if RackStep should or should NOT
 
 allow dinamic routing and...
 
-I decided to NOT include dinamic routing.
-
-At least for now. 
+I decided to NOT include dinamic routing; at least for now. 
 
 I know a lot of people will criticize me for this decision
 
@@ -82,9 +85,7 @@ Well.. RackStep does not work this way.
 
 Your path cannot contain variables
 
-but doing something similar to this is not hard!
-
-You could for example do something like this:
+But you could, for example, do something like this:
 
 GET /users?id=10
 
@@ -127,9 +128,9 @@ class ExampleController < RackStep::Controller
   end
 end
 
-RackStep by default assumes that your service response will return a json content.
+RackStep by default assumes that your service response will return a json content
 
-In this example, let's change that to "text/html".
+but in this example, let's change that to "text/html".
 
 class ExampleController < RackStep::Controller
   def process_request
@@ -157,11 +158,11 @@ with the value 10, we will get back a massage saying "Your ID is 10".
 
 When using the POST http method, the same principles applies.
 
-Well, now you know how to retrieve and use query parameters with RackStep.
+Well, now you know how to retrieve and use parameters with RackStep.
 
 --
 
-What happens when the user enters an invalid URL path?
+But what happens when the user enters an invalid URL path?
 
 As you might have guessed, the server returns a 404 - not found message.
 
