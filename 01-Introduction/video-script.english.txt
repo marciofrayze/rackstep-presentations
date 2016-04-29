@@ -1,0 +1,244 @@
+RackStep Video tutorial #01- Introduction (video script)
+-----------------------------------------
+
+Hello everyone! My name is Marcio and this is the first RackStep video tutorial.
+
+Today I will give you a quick introduction to this technology.
+
+So, let's get started.
+
+--
+
+What is RackStep?
+
+It's a very small web framework built around Ruby Rack Interface
+
+and it still in early stage of development
+
+but in the future  might be an alternative to Sinatra, Camping
+
+and other  micro ruby web frameworks and libraries.
+
+RackStep is not and will never be an alternative to
+
+Ruby on Rails, Padrino, Lotus or any other “full-stack” framework.
+
+--
+
+The main goals of this project are:
+
+Be as simple as possible.
+
+By that, I mean that using the framework should be really easy, but most important:
+
+The code base of the framework itself and it's architecture must be kept simple.
+
+As part of this concept, another main goal is to
+
+Keep the source code small.
+
+and
+
+Implement only the necessary; no overcomplications.
+
+This project will never be a full-stack framework.
+
+it will only give you the base to start a new project and you probably will need to extend it to your needs.
+
+The good side about it is that you will have freedom to explore and do things exactly how you want.
+
+This project aims to
+
+Allow easy implementation of microservices.
+
+If you are not familiar with this concept, it's important that you research about it,
+
+this way it will be easier for you to understand how to use this framework.
+
+Another important characteristic is that RackStep
+
+uses a pure object oriented approach, avoiding Domain Specific Languages  and configuration files.
+
+Because of that, It's important that you understand object oriented programming.
+
+You must know how to create and extend classes, call methods, include modules, etc.
+
+--
+
+This is how RackStep works.
+
+First your server will receive a http request, as usual.
+
+A new instance of your application will be initialized to handle that request.
+
+This application class don't process your business logic directly.
+
+It will delegate this to a controller.
+
+Your application must have at least one controller.
+
+Each controller will handle one and only one service.
+
+Since you probably want to have more than one service,
+
+your application must decide which controller should process that request it just received.
+
+So it will delegate this responsibility to a singleton instance of the Router class.
+
+Based on the path and the http method of the request,
+
+the router will send back to the application which controller should handle the request.
+
+A new instance of that controller will be initialized and then, finally, the request will be processed.
+
+The controller should also decide what will be the response content type, body of the response, etc.
+
+It may sound a little too complicated right now, but... don't worry.
+
+I will show you now an example so you can see that it's actually quite simple.
+
+-
+
+In our example we will create a simple service that returns
+
+the current server time in json format.
+
+We will create 3 small files.
+
+First, lets create a file called app.
+
+Now, let's require the RackStep framework.
+
+Then we will need to create a class called App.
+
+You can call it whatever you like, but it must extend the RackStep::App class.
+
+Inside the body of this class, we will call the add_route method.
+
+This method expects three parameters.
+
+The first one is the http method or verb. In this example, we will use GET,
+
+but it's also possible to use other verbs, like POST, PUT or DELETE.
+
+The second parameter represents the path we want to route.
+
+In our example, it's the "time" path and
+
+usually each service is associated with a different path.
+
+The last parameter of the add_router method is
+
+the name of controller class that will process this service.
+
+In this case, it's TimeController.
+
+Again, you may choose any name you like.
+
+---
+
+Let's now create a file called controller and define the TimeController class.
+
+Every controller MUST extend the RackStep::Controller class.
+
+Let's also define the process_request method.
+
+This method will be invoked automatically by RackStep
+
+and this is where your business logic should be implemented.
+
+Since we want to return a JSON with the current time
+
+the easier way to do so is to create a hash object
+
+with that information.
+
+Another very important thing to know about RackStep is that
+
+every controller object contains an attribute called response.
+
+This object is injected by RackStep and
+
+represents the response that will be delivered to the user.
+
+By default, RackStep assumes that your controller will use JSON as the content type
+
+but you can always overwrite this value.
+
+Let's set the body of the response with our JSON content
+
+that we want to delivery to the user.
+
+Since we are using the "to_json" method, we have to require the json library.
+
+And... that's it. Our first RackStep application example is almost complete.
+
+---
+
+Now we just need to create one more file, config.ru.
+
+This file is used to tell our ruby webserver how to run our application.
+
+You may use any rack-compatatible server. In development, I like to use shotgun or rackup.
+
+In production, I usually use Puma or Unicorn. But, again, you can choose anyone you like.
+
+All of them will read this file and run your application just fine.
+
+In this example, we just need three lines of code.
+
+In fact, all we need to do is require our other two previous created files
+
+And then... we just need to tell the server what class implements our application.
+
+That's it! Our first RackStep example is now complete!
+
+---
+
+If we start the server using rackup, shotgun or any other rack-compatatible server
+
+we can go to our web-browser and access the service in the slash time path
+
+and we will get a JSON response with the current date and time, as expected.
+
+--
+
+The example we saw here runs just fine, but... it's a little incomplete.
+
+I oversimplified a few things to make it easier for you to follow
+
+and it was a minimalistic application.
+
+I highly recommend you to use a template application as a starting point.
+
+You can find a nice official template at this address:
+
+--
+
+Here is a few other things that RackStep can help you.
+
+You can add modules to your controller
+
+to access some helper methods for
+
+rendering E-R-B templates.
+
+And to
+
+handle Basic access authentication.
+
+The official template is ready for production.
+
+It can be deployed at heroku and probably other providers too.
+
+It also contains examples on how to test using minitest.
+
+and it's ready to use simplecov for coverage report.
+
+--
+
+Well, that's the end of this presentation
+
+and I hope you enjoyed it.
+
+Thanks a lot for watching. Peace.
