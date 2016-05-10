@@ -1,41 +1,47 @@
-RackStep Video tutorial #02- Routing (video script)
-------------------------------------
+RackStep Video tutorial #02 - Routing (video script)
+-------------------------------------
 
 Hello everyone! My name is Marcio and this is the second RackStep video tutorial.
 
-Today I will show you the RackStep Routing System.
+In my previous presentation I gave a quick introduction to the RackStep framework.
+
+Today I will show you a few more details about the RackStep Routing System.
 
 So, let's get started.
 
 --
 
-As I said in my previous video, 
+As I said in the first video,
 
-one of the main goals of RackStep is to be as simple as possible
+one of the main goals of RackStep is to be as simple as possible.
 
-and the current RackStep Routing System takes this to the extreme.
+The current RackStep Routing System takes this to the extreme.
 
 --
 
-But first... what is a Route?
+But before we dig into the RackStep routing system details...
 
-If you have ever used Ruby on Rails or Sinatra 
+What is a Route?
+
+If you have ever used Ruby on Rails or Sinatra
 
 you probably saw this concept before
 
-and in RackStep it's very similar.
+and in RackStep it's *very* similar.
 
 The Router is the part of the framework responsible for...
 
 given a http request, decide which controller should answer it.
 
-To do that in RackStep we use the add_route method 
+To do that in RackStep we use the add_route method
 
 to bind a kind of request with a controller.
 
-This way, we are able to connect a URL with 
+This way, we are able to connect a URL with
 
 the code that will process that request.
+
+--
 
 In RackStep a Route is defined by the combination of a http verb
 
@@ -47,11 +53,11 @@ So
 
 GET /users
 
-POST /messages/comment
+POST /messages/comments
 
 DELETE /orders
 
-this are a few examples of valid Routes in RackStep.
+are a few examples of valid Routes in RackStep.
 
 --
 
@@ -63,15 +69,17 @@ My main struggle was to decide if RackStep should or should NOT
 
 allow dinamic routing and...
 
-I decided to NOT include dinamic routing; at least for now. 
+I decided to NOT include dinamic routing; at least for now.
 
-I know a lot of people will criticize me for this decision
+I know a lot of people will criticize this decision
 
-but as I said before, I want the code base of the framework to be 
+but as I said before, I want the code base of the framework to be
 
 as small and simple as possible.
 
 --
+
+(title) Path Parameters vs Query Parameters
 
 If you are used to work with REST APIs,
 
@@ -81,11 +89,11 @@ GET /users/10
 
 Where 10 is a path parameter that represents the ID of a user.
 
-Well.. RackStep does not work this way. 
+Well.. RackStep does not work this way.
 
 Your path cannot contain variables
 
-But you could, for example, do something like this:
+but you could, for example, do something like this:
 
 GET /users?id=10
 
@@ -108,13 +116,13 @@ class UsersController < RackStep::Controller
   end
 end
 
-As you probably know by now, 
+As you probably know by now,
 
 this is the base of every RackStep application, right?
 
 First we created an App with the routes
 
-and then our controllers. 
+and then our controllers.
 
 In this example we defined only one, the UsersController.
 
@@ -124,7 +132,7 @@ class ExampleController < RackStep::Controller
   def process_request
     id = request.params['id']
 
-   
+
   end
 end
 
@@ -136,7 +144,7 @@ class ExampleController < RackStep::Controller
   def process_request
     id = request.params['id']
     response.content_type = 'text/html'
-    
+
   end
 end
 
@@ -150,13 +158,13 @@ class ExampleController < RackStep::Controller
   end
 end
 
-If we start this application and go to our web browser 
+If we start this application and go to our web browser
 
-in the /users address and enter a query string named ID 
+in the "/users" address and enter a query string named ID
 
 with the value 10, we will get back a massage saying "Your ID is 10".
 
-When using the POST http method, the same principles applies.
+When using the POST http method, the same principles apply.
 
 Well, now you know how to retrieve and use parameters with RackStep.
 
@@ -168,11 +176,11 @@ As you might have guessed, the server returns a 404 - not found message.
 
 But... what exactly is going on here?
 
-Well, when no route is found, the RackStep Router will overwrite
+Well, when no route is found, internally RackStep Router will overwrite
 
 whatever path was entered by the user and change that to "notfound".
 
-You can imagine that as if RackStep was redirecting the user to "/notfound".
+You can imagine that as if the user was redirected to "/notfound".
 
 By default, RackStep creates a simple Controller called RackStep::NotFoundController
 
@@ -180,9 +188,9 @@ and creates a route that binds the "notfound" path to this class.
 
 This way, every request with an invalid path will be delegated to RackStep::NotFoundController.
 
-If you want, you can delegate this to another controller. 
+If you want, you can delegate this to another controller.
 
-All you have to do is call the add_route method with the 
+All you have to do is call the add_route method with the
 
 "notfound" path to redirect the request to your custom controller.
 
