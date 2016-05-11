@@ -19,7 +19,7 @@ The current RackStep Routing System takes this to the extreme.
 
 --
 
-But before we dig into the RackStep routing system details...
+But before we dig into the RackStep Routing System details...
 
 What is a Route?
 
@@ -138,7 +138,7 @@ end
 
 RackStep by default assumes that your service response will return a json content
 
-but in this example, let's change that to "text/html".
+but in this example, let's change that to "html".
 
 class ExampleController < RackStep::Controller
   def process_request
@@ -148,7 +148,7 @@ class ExampleController < RackStep::Controller
   end
 end
 
-And return back to the user message with the ID.
+And return back to the user a message with the ID.
 
 class ExampleController < RackStep::Controller
   def process_request
@@ -166,13 +166,15 @@ with the value 10, we will get back a massage saying "Your ID is 10".
 
 When using the POST http method, the same principles apply.
 
+--
+
 Well, now you know how to retrieve and use parameters with RackStep.
 
 --
 
 But what happens when the user enters an invalid URL path?
 
-As you might have guessed, the server returns a 404 - not found message.
+As you might have guessed, the server returns a not found message with a 404 http status code.
 
 But... what exactly is going on here?
 
@@ -182,16 +184,28 @@ whatever path was entered by the user and change that to "notfound".
 
 You can imagine that as if the user was redirected to "/notfound".
 
-By default, RackStep creates a simple Controller called RackStep::NotFoundController
+By default, RackStep creates a simple Controller called (RackStep::)NotFoundController
 
 and creates a route that binds the "notfound" path to this class.
 
-This way, every request with an invalid path will be delegated to RackStep::NotFoundController.
+This way, every request with an invalid path will be delegated to (RackStep::)NotFoundController.
 
 If you want, you can delegate this to another controller.
 
-All you have to do is call the add_route method with the
+All you have to do is call the add_route method or add_route_for_all_verbs methods with the
 
 "notfound" path to redirect the request to your custom controller.
 
 This will overwrite the default route created by RackStep.
+
+--
+
+If you have any doubts, take a look at the source code.
+
+I believe it's very straightforward and easy to understand.
+
+--
+
+Now you know how the RackStep Routing System works, right?
+
+Thanks a lot for watching.
